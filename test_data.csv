@@ -1,0 +1,33 @@
+Date,Category,Amount,Description,Payment_Method,Location
+2024-01-15,Groceries,125.50,Whole Foods Market,Credit Card,San Francisco
+2024-01-16,Transportation,45.00,Uber rides,Credit Card,San Francisco
+2024-01-17,Entertainment,89.99,Netflix subscription,Debit Card,Online
+2024-01-18,Dining,67.25,Restaurant dinner,Credit Card,San Francisco
+2024-01-19,Shopping,234.99,Clothing purchase,Credit Card,San Francisco
+2024-01-20,Utilities,156.78,Electricity bill,Debit Card,San Francisco
+2024-01-21,Transportation,32.50,Public transit,Cash,San Francisco
+2024-01-22,Entertainment,45.00,Movie tickets,Credit Card,San Francisco
+2024-01-23,Dining,89.75,Weekend brunch,Credit Card,San Francisco
+2024-01-24,Shopping,189.99,Electronics purchase,Credit Card,San Francisco
+2024-01-25,Groceries,98.45,Trader Joe's,Credit Card,San Francisco
+2024-01-26,Transportation,28.00,Parking fees,Cash,San Francisco
+2024-01-27,Entertainment,120.00,Concert tickets,Credit Card,San Francisco
+2024-01-28,Dining,156.30,Anniversary dinner,Credit Card,San Francisco
+2024-01-29,Shopping,67.89,Home goods,Credit Card,San Francisco
+2024-01-30,Utilities,89.45,Internet bill,Debit Card,San Francisco
+2024-01-31,Transportation,55.00,Gas station,Credit Card,San Francisco
+2024-02-01,Entertainment,34.99,Streaming service,Debit Card,Online
+2024-02-02,Dining,78.50,Lunch with colleagues,Credit Card,San Francisco
+2024-02-03,Shopping,145.67,Office supplies,Credit Card,San Francisco
+2024-02-04,Groceries,112.30,Safeway,Credit Card,San Francisco
+2024-02-05,Transportation,42.00,Car maintenance,Credit Card,San Francisco
+2024-02-06,Entertainment,67.50,Bowling night,Credit Card,San Francisco
+2024-02-07,Dining,134.25,Dinner party,Credit Card,San Francisco
+2024-02-08,Shopping,89.99,Books purchase,Credit Card,San Francisco
+2024-02-09,Utilities,123.45,Water bill,Debit Card,San Francisco
+2024-02-10,Transportation,38.75,Bus passes,Cash,San Francisco
+2024-02-11,Entertainment,89.00,Theme park tickets,Credit Card,San Francisco
+2024-02-12,Dining,67.80,Quick lunch,Credit Card,San Francisco
+2024-02-13,Shopping,234.56,Furniture purchase,Credit Card,San Francisco
+2024-02-14,Groceries,87.90,Local market,Credit Card,San Francisco
+2024-02-15,Transportation,29.50,Parking meter,Cash,San Francisco 
