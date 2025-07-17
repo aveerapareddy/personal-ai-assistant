@@ -66,7 +66,7 @@ const Header: React.FC = () => {
             color="#222"
             sx={{ letterSpacing: 1 }}
           >
-            Personal AI Assistant
+            XAN AI Assistant
           </Typography>
         </Box>
       </Toolbar>

@@ -1,5 +1,5 @@
 """
-Personal AI Assistant - FastAPI Application
+XAN AI Assistant - FastAPI Application
 Main entry point for the backend API server.
 """
 
@@ -17,17 +17,17 @@ from app.api.routes import api_router
 async def lifespan(app: FastAPI):
     """Application lifespan events."""
     # Startup
-    print("🚀 Starting Personal AI Assistant...")
+    print("🚀 Starting XAN AI Assistant...")
     yield
     # Shutdown
-    print("👋 Shutting down Personal AI Assistant...")
+    print("👋 Shutting down XAN AI Assistant...")
 
 
 def create_application() -> FastAPI:
     """Create and configure the FastAPI application."""
     
     app = FastAPI(
-        title="Personal AI Assistant API",
+        title="XAN AI Assistant API",
         description="A sophisticated AI-powered personal assistant with chain-of-thought reasoning",
         version="1.0.0",
         docs_url="/docs",
@@ -51,7 +51,7 @@ def create_application() -> FastAPI:
     async def root():
         """Root endpoint."""
         return {
-            "message": "Personal AI Assistant API",
+            "message": "XAN AI Assistant API",
             "version": "1.0.0",
             "status": "running",
             "docs": "/docs"

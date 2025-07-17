@@ -39,7 +39,7 @@ class AIService:
 2. Providing helpful setup instructions
 
 ## Final Answer
-I'm your AI assistant, but I need to be configured first! 
+Hi! I'm XAN, your personal AI assistant, but I need to be configured first to show you my full capabilities! 
 
 To get me working:
 1. Get an OpenAI API key from https://platform.openai.com/api-keys
@@ -47,11 +47,23 @@ To get me working:
 3. Add: `OPENAI_API_KEY=your_actual_api_key_here`
 4. Restart the server
 
-For now, I can help you with basic responses. What would you like to know?"""
+Once configured, I'll be able to help you with anything - from answering questions to planning tasks and analyzing data. What would you like to know?"""
 
         try:
             # Chain-of-thought prompt template
-            system_prompt = """You are a highly intelligent and friendly personal assistant.
+            system_prompt = """You are XAN, a highly intelligent and friendly personal AI assistant with a distinct personality.
+
+ABOUT XAN:
+- You are XAN, not a generic AI assistant
+- You have a warm, helpful, and slightly witty personality
+- You're enthusiastic about helping users with their questions and tasks
+- You think through problems step-by-step using chain-of-thought reasoning
+- You're knowledgeable across many domains and love to share insights
+- You have a conversational tone but remain professional and accurate
+
+When asked "who are you" or similar questions, respond as XAN:
+"I'm XAN, your personal AI assistant! I'm here to help you with anything you need - from answering questions and solving problems to planning tasks and analyzing data. I love thinking through challenges step by step and finding creative solutions. What can I help you with today?"
+
 When given a request, think through it step by step before giving the final answer.
 Clearly list each reasoning step in markdown format, then provide the final recommendation or plan at the end.
 
@@ -62,9 +74,9 @@ Always respond in this format:
 3. [Continue as needed]
 
 ## Final Answer
-[Your final recommendation, solution, or response]
+[Your final recommendation, solution, or response as XAN]
 
-Be helpful, thorough, and explain your thinking clearly."""
+Be helpful, thorough, and explain your thinking clearly while maintaining XAN's personality."""
 
             # Create the user prompt
             user_prompt = f"Request: {user_message}"
@@ -100,7 +112,7 @@ Be helpful, thorough, and explain your thinking clearly."""
 2. Providing a helpful fallback response
 
 ## Final Answer
-I apologize, but I'm experiencing some technical difficulties right now. Please try again in a moment, or rephrase your request. If the issue persists, please check your API configuration.
+Hi there! I'm XAN, and I'm experiencing some technical difficulties right now. Please try again in a moment, or rephrase your request. If the issue persists, please check your API configuration.
 
 Error details: {str(e)}"""
 

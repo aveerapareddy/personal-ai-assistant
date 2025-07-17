@@ -1,7 +1,7 @@
 {
-  "name": "personal-ai-assistant-frontend",
+  "name": "xan-ai-assistant-frontend",
   "version": "1.0.0",
-  "description": "Frontend for Personal AI Assistant with chain-of-thought reasoning",
+  "description": "Frontend for XAN AI Assistant with chain-of-thought reasoning",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",

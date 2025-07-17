@@ -33,6 +33,7 @@ import {
   Work as WorkIcon,
   Flag as FlagIcon,
   List as ListIcon,
+  Add as AddIcon,
 } from '@mui/icons-material'
 import { taskAPI } from '../services/taskAPI'
 import { TaskPlanRequest, Task, TaskPlanResponse } from '../types/tasks'
@@ -58,6 +59,7 @@ const TaskPlanner: React.FC = () => {
     error: null,
     plan: null,
   })
+  const [showFormCard, setShowFormCard] = useState(true)
 
   const handleInputChange = (field: keyof TaskPlanRequest, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -73,6 +75,7 @@ const TaskPlanner: React.FC = () => {
     try {
       const plan = await taskAPI.generateTaskPlan(formData)
       setState((prev) => ({ ...prev, isLoading: false, plan }))
+      setShowFormCard(false) // Minimize the form after successful generation
     } catch (error: any) {
       setState((prev) => ({
         ...prev,
@@ -84,6 +87,20 @@ const TaskPlanner: React.FC = () => {
 
   const handleRegenerate = () => {
     setState((prev) => ({ ...prev, plan: null }))
+  }
+
+  const handleShowForm = () => {
+    setShowFormCard(true)
+  }
+
+  const handleReset = () => {
+    setState((prev) => ({
+      ...prev,
+      plan: null,
+      error: null,
+    }))
+    setFormData(defaultForm)
+    setShowFormCard(true)
   }
 
   const handleTaskToggle = (taskIndex: number) => {
@@ -126,132 +143,176 @@ const TaskPlanner: React.FC = () => {
         </Typography>
       </Box>
 
+      {/* Collapsed Form Bar */}
+      {!showFormCard && state.plan && (
+        <Paper
+          elevation={2}
+          sx={{
+            mb: 3,
+            px: 2,
+            py: 1.5,
+            borderRadius: 3,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            background: theme.palette.background.paper,
+            boxShadow: '0 2px 8px 0 rgba(30,34,90,0.06)',
+            border: `1.5px solid ${theme.palette.divider}`,
+          }}
+        >
+          <Typography variant="subtitle1" color="text.primary">
+            Want to create a new task plan?
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AddIcon />}
+              onClick={handleShowForm}
+              sx={{ fontWeight: 600, borderRadius: 2 }}
+            >
+              Create New Plan
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={handleReset}
+              sx={{ fontWeight: 600, borderRadius: 2 }}
+            >
+              Reset
+            </Button>
+          </Box>
+        </Paper>
+      )}
+
       {/* Input Form */}
-      <Paper
-        elevation={3}
-        sx={{
-          p: { xs: 2, sm: 4 },
-          mb: 4,
-          borderRadius: 4,
-          background: theme.palette.background.paper,
-          boxShadow: '0 8px 32px 0 rgba(30,34,90,0.10)',
-          backdropFilter: 'blur(18px)',
-          border: `1.5px solid ${theme.palette.divider}`,
-        }}
-      >
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="What's your goal?"
-                placeholder="e.g., Launch my AI product, Learn React, Build a mobile app"
-                value={formData.goal}
-                onChange={(e) => handleInputChange('goal', e.target.value)}
-                multiline
-                rows={3}
-                variant="outlined"
-                color="primary"
-                sx={{ mb: 2 }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel>Timeframe</InputLabel>
-                <Select
-                  value={formData.timeframe}
+      {showFormCard && (
+        <Paper
+          elevation={3}
+          sx={{
+            p: { xs: 2, sm: 4 },
+            mb: 4,
+            borderRadius: 4,
+            background: theme.palette.background.paper,
+            boxShadow: '0 8px 32px 0 rgba(30,34,90,0.10)',
+            backdropFilter: 'blur(18px)',
+            border: `1.5px solid ${theme.palette.divider}`,
+          }}
+        >
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="What's your goal?"
+                  placeholder="e.g., Launch my AI product, Learn React, Build a mobile app"
+                  value={formData.goal}
+                  onChange={(e) => handleInputChange('goal', e.target.value)}
+                  multiline
+                  rows={3}
+                  variant="outlined"
+                  color="primary"
+                  sx={{ mb: 2 }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Timeframe</InputLabel>
+                  <Select
+                    value={formData.timeframe}
+                    onChange={(e) =>
+                      handleInputChange('timeframe', e.target.value)
+                    }
+                    label="Timeframe"
+                  >
+                    <MenuItem value="1 week">1 Week</MenuItem>
+                    <MenuItem value="2 weeks">2 Weeks</MenuItem>
+                    <MenuItem value="1 month">1 Month</MenuItem>
+                    <MenuItem value="3 months">3 Months</MenuItem>
+                    <MenuItem value="6 months">6 Months</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Complexity</InputLabel>
+                  <Select
+                    value={formData.complexity}
+                    onChange={(e) =>
+                      handleInputChange('complexity', e.target.value)
+                    }
+                    label="Complexity"
+                  >
+                    <MenuItem value="simple">Simple</MenuItem>
+                    <MenuItem value="medium">Medium</MenuItem>
+                    <MenuItem value="complex">Complex</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Resources</InputLabel>
+                  <Select
+                    value={formData.resources}
+                    onChange={(e) =>
+                      handleInputChange('resources', e.target.value)
+                    }
+                    label="Resources"
+                  >
+                    <MenuItem value="minimal">Minimal</MenuItem>
+                    <MenuItem value="standard">Standard</MenuItem>
+                    <MenuItem value="extensive">Extensive</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Constraints (optional)"
+                  placeholder="e.g., Budget limits, time constraints, technical limitations"
+                  value={formData.constraints}
                   onChange={(e) =>
-                    handleInputChange('timeframe', e.target.value)
+                    handleInputChange('constraints', e.target.value)
                   }
-                  label="Timeframe"
-                >
-                  <MenuItem value="1 week">1 Week</MenuItem>
-                  <MenuItem value="2 weeks">2 Weeks</MenuItem>
-                  <MenuItem value="1 month">1 Month</MenuItem>
-                  <MenuItem value="3 months">3 Months</MenuItem>
-                  <MenuItem value="6 months">6 Months</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel>Complexity</InputLabel>
-                <Select
-                  value={formData.complexity}
-                  onChange={(e) =>
-                    handleInputChange('complexity', e.target.value)
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  startIcon={
+                    state.isLoading ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      <PlayIcon />
+                    )
                   }
-                  label="Complexity"
+                  disabled={state.isLoading}
+                  sx={{
+                    height: 56,
+                    fontWeight: 600,
+                    borderRadius: 2,
+                    background: theme.palette.primary.main,
+                    '&:hover': {
+                      background: theme.palette.primary.dark,
+                    },
+                  }}
                 >
-                  <MenuItem value="simple">Simple</MenuItem>
-                  <MenuItem value="medium">Medium</MenuItem>
-                  <MenuItem value="complex">Complex</MenuItem>
-                </Select>
-              </FormControl>
+                  {state.isLoading ? 'Generating Plan...' : 'Generate Plan'}
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel>Resources</InputLabel>
-                <Select
-                  value={formData.resources}
-                  onChange={(e) =>
-                    handleInputChange('resources', e.target.value)
-                  }
-                  label="Resources"
-                >
-                  <MenuItem value="minimal">Minimal</MenuItem>
-                  <MenuItem value="standard">Standard</MenuItem>
-                  <MenuItem value="extensive">Extensive</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Constraints (optional)"
-                placeholder="e.g., Budget limits, time constraints, technical limitations"
-                value={formData.constraints}
-                onChange={(e) =>
-                  handleInputChange('constraints', e.target.value)
-                }
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                startIcon={
-                  state.isLoading ? (
-                    <CircularProgress size={20} />
-                  ) : (
-                    <PlayIcon />
-                  )
-                }
-                disabled={state.isLoading}
-                sx={{
-                  height: 56,
-                  fontWeight: 600,
-                  borderRadius: 2,
-                  background: theme.palette.primary.main,
-                  '&:hover': {
-                    background: theme.palette.primary.dark,
-                  },
-                }}
-              >
-                {state.isLoading ? 'Generating Plan...' : 'Generate Plan'}
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-        {/* Error State */}
-        {state.error && (
-          <Alert severity="error" sx={{ mt: 2 }}>
-            {state.error}
-          </Alert>
-        )}
-      </Paper>
+          </form>
+          {/* Error State */}
+          {state.error && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {state.error}
+            </Alert>
+          )}
+        </Paper>
+      )}
 
       {/* Task Plan Results */}
       {state.plan && (

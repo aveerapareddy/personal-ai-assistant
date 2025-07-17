@@ -14,6 +14,7 @@ import ChatMessage from '../components/ChatMessage'
 import ChatInput from '../components/ChatInput'
 import ChatActions from '../components/ChatActions'
 import QuickActions from '../components/QuickActions'
+import AILoadingMessage from '../components/AILoadingMessage'
 import { chatAPI, ChatResponse } from '../services/api'
 import { Message } from '../types/chat'
 import {
@@ -29,6 +30,7 @@ import {
   selectCurrentSessionId,
   selectIsLoading,
   selectError,
+  setLoading,
 } from '../store/slices/chatSlice'
 
 const ChatPage: React.FC = () => {
@@ -38,6 +40,9 @@ const ChatPage: React.FC = () => {
   const currentSessionId = useSelector(selectCurrentSessionId)
   const isLoading = useSelector(selectIsLoading)
   const error = useSelector(selectError)
+
+  // Debug logging for loading state
+  console.log('ChatPage render - isLoading:', isLoading)
 
   const [aiCapabilities, setAiCapabilities] = useState<any>(null)
   const [showQuickActions, setShowQuickActions] = useState(true)
@@ -79,6 +84,8 @@ const ChatPage: React.FC = () => {
   const handleSendMessage = async (messageText: string) => {
     if (!messageText.trim() || !currentSessionId) return
 
+    console.log('handleSendMessage called with:', messageText)
+
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -90,9 +97,15 @@ const ChatPage: React.FC = () => {
     dispatch(addMessage(userMessage))
     setShowQuickActions(false)
 
+    // Set loading state
+    console.log('Setting loading state to true')
+    dispatch(setLoading(true))
+
     try {
       // Send message to AI backend
+      console.log('Sending message to AI backend...')
       const response: ChatResponse = await chatAPI.sendMessage(messageText)
+      console.log('Received response:', response)
 
       // Add assistant message
       const assistantMessage: Message = {
@@ -107,8 +120,12 @@ const ChatPage: React.FC = () => {
 
       dispatch(addMessage(assistantMessage))
     } catch (error) {
+      console.error('Error in handleSendMessage:', error)
       dispatch(setError('Failed to send message. Please try again.'))
-      console.error('Error sending message:', error)
+    } finally {
+      // Clear loading state
+      console.log('Setting loading state to false')
+      dispatch(setLoading(false))
     }
   }
 
@@ -181,7 +198,7 @@ const ChatPage: React.FC = () => {
             }}
           />
           <Typography variant="h5" fontWeight={600} color="text.primary">
-            AI Chat Assistant
+            XAN
           </Typography>
           {currentSession && (
             <Typography variant="body2" sx={{ color: 'text.secondary', ml: 1 }}>
@@ -269,7 +286,7 @@ const ChatPage: React.FC = () => {
             >
               <AIIcon sx={{ fontSize: 64, mb: 1, opacity: 0.5 }} />
               <Typography variant="h5" fontWeight={700} gutterBottom>
-                Welcome to your Personal AI Assistant
+                Welcome to XAN
               </Typography>
               <Typography variant="body2" sx={{ maxWidth: 400, mb: 2 }}>
                 Ask me anything! I can help with analysis, planning,
@@ -294,31 +311,7 @@ const ChatPage: React.FC = () => {
               ))}
 
               {/* Loading indicator */}
-              {isLoading && (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    mb: 2,
-                  }}
-                >
-                  <Paper
-                    elevation={2}
-                    sx={{
-                      p: 2,
-                      backgroundColor: 'primary.light',
-                      color: 'primary.contrastText',
-                      borderRadius: 2,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1,
-                    }}
-                  >
-                    <CircularProgress size={20} color="inherit" />
-                    <Typography variant="body2">AI is thinking...</Typography>
-                  </Paper>
-                </Box>
-              )}
+              {isLoading && <AILoadingMessage isLoading={isLoading} />}
             </>
           )}
 

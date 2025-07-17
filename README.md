@@ -1,4 +1,4 @@
-# Personal AI Assistant (Chain-of-Thought Reasoning)
+# XAN AI Assistant (Chain-of-Thought Reasoning)
 
 A sophisticated AI-powered personal assistant that leverages chain-of-thought reasoning to provide intelligent task planning, CSV analysis, and interactive chat capabilities.
 

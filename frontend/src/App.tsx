@@ -25,7 +25,7 @@ const App: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   // Map path to page title
   const pageTitles: Record<string, string> = {
-    '/': 'AI Chat Assistant',
+    '/': 'XAN',
     '/dashboard': 'Dashboard',
     '/analysis': 'Analysis',
     '/tasks': 'Tasks',

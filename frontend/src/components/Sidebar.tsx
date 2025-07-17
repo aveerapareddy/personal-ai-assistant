@@ -37,7 +37,7 @@ const NAV_ITEMS = [
     label: 'Chat',
     icon: <ChatIcon />,
     path: '/',
-    description: 'AI Conversations',
+    description: 'XAN Conversations',
   },
   {
     label: 'Dashboard',
@@ -200,7 +200,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   fontSize: '1.25rem',
                 }}
               >
-                Personal AI
+                XAN AI
               </Typography>
               <Typography
                 variant="caption"
