@@ -47,6 +47,8 @@ const ChatPage: React.FC = () => {
   const [aiCapabilities, setAiCapabilities] = useState<any>(null)
   const [showQuickActions, setShowQuickActions] = useState(true)
   const [snackbarMessage, setSnackbarMessage] = useState('')
+  const [draftMessage, setDraftMessage] = useState('')
+  const [selectedMessages, setSelectedMessages] = useState<string[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll to bottom when new messages are added
@@ -81,10 +83,13 @@ const ChatPage: React.FC = () => {
     loadCapabilities()
   }, [])
 
-  const handleSendMessage = async (messageText: string) => {
+  const handleSendMessage = async (
+    messageText: string,
+    attachments?: File[]
+  ) => {
     if (!messageText.trim() || !currentSessionId) return
 
-    console.log('handleSendMessage called with:', messageText)
+    console.log('handleSendMessage called with:', messageText, attachments)
 
     // Add user message
     const userMessage: Message = {
@@ -92,6 +97,12 @@ const ChatPage: React.FC = () => {
       sender: 'user',
       content: messageText,
       timestamp: new Date(),
+      attachments: attachments?.map((file, index) => ({
+        id: `attachment-${Date.now()}-${index}`,
+        name: file.name,
+        type: file.type,
+        size: file.size,
+      })),
     }
 
     dispatch(addMessage(userMessage))
@@ -129,6 +140,44 @@ const ChatPage: React.FC = () => {
     }
   }
 
+  const handleEditMessage = (messageId: string, newContent: string) => {
+    // TODO: Implement message editing in Redux store
+    console.log('Edit message:', messageId, newContent)
+  }
+
+  const handleDeleteMessage = (messageId: string) => {
+    // TODO: Implement message deletion in Redux store
+    console.log('Delete message:', messageId)
+  }
+
+  const handleReactToMessage = (messageId: string, reactionType: string) => {
+    // TODO: Implement message reactions in Redux store
+    console.log('React to message:', messageId, reactionType)
+  }
+
+  const handleReplyToMessage = (messageId: string) => {
+    // TODO: Implement message threading
+    console.log('Reply to message:', messageId)
+  }
+
+  const handlePinMessage = (messageId: string) => {
+    // TODO: Implement message pinning
+    console.log('Pin message:', messageId)
+  }
+
+  const handleSelectMessage = (messageId: string) => {
+    setSelectedMessages((prev) =>
+      prev.includes(messageId)
+        ? prev.filter((id) => id !== messageId)
+        : [...prev, messageId]
+    )
+  }
+
+  const handleDraftChange = (draft: string) => {
+    setDraftMessage(draft)
+    // TODO: Save draft to localStorage or Redux store
+  }
+
   const handleNewSession = () => {
     dispatch(createSession({ title: 'New Chat' }))
     setShowQuickActions(true)
@@ -164,6 +213,10 @@ const ChatPage: React.FC = () => {
 
   const handleQuickAction = (prompt: string) => {
     handleSendMessage(prompt)
+  }
+
+  const handleRegenerateMessage = (message: Message) => {
+    handleSendMessage(message.content)
   }
 
   const currentSession = sessions.find((s) => s.id === currentSessionId)
@@ -307,7 +360,18 @@ const ChatPage: React.FC = () => {
           ) : (
             <>
               {messages.map((message) => (
-                <ChatMessage key={message.id} message={message} />
+                <ChatMessage
+                  key={message.id}
+                  message={message}
+                  onRegenerate={handleRegenerateMessage}
+                  onEdit={handleEditMessage}
+                  onDelete={handleDeleteMessage}
+                  onReact={handleReactToMessage}
+                  onReply={handleReplyToMessage}
+                  onPin={handlePinMessage}
+                  isSelected={selectedMessages.includes(message.id)}
+                  onSelect={handleSelectMessage}
+                />
               ))}
 
               {/* Loading indicator */}
@@ -335,6 +399,8 @@ const ChatPage: React.FC = () => {
             isLoading={isLoading}
             disabled={!aiCapabilities?.configured}
             autoFocus
+            draftMessage={draftMessage}
+            onDraftChange={handleDraftChange}
           />
         </Box>
       </Box>
